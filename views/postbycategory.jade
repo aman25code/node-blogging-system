@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    h2=title
+    if posts
+        each post, i in posts
+            .post
+                h1
+                    a(href='/post/show/#{post._id}')
+                        =post.title
+                p.meta By #{post.author} on #{moment(post.date).format("DD-MM-YYYY")}
+                !=truncateText(post.boyd,280)
+                h4
+                    a.more(href='/post/show/#{post._id}') Read More

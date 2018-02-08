@@ -1,0 +1,37 @@
+extends layout
+
+block content
+    if post
+        .post
+            h1=post.title
+            p.meta By #{post.author} on #{moment(post.date).format("DD-MM-YYYY")}
+            !=post.boyd
+
+            hr
+            if post.comments
+                h3 Comments
+                each comment, i in post.comments
+                    .comment
+                        p.comment-name #{comment.name} on #{moment(comment.commentdate).format("DD-MM-YYYY")}
+                        !=comment.body
+
+        h3 Add Comments
+        if errors
+            ul.errors
+                each error in errors
+                    li.alert.alert-danger #{error.msg}
+        form.comment-form(method='post', action='/post/addcomment')
+            input(name='postid', type='hidden', value='#{post._id}')
+            .form-group
+                label Name
+                input.form-control(type='text' name='name', placeholder='Enter your Name')
+            .form-group
+                label Email
+                input.form-control(type='text' name='email', placeholder='Enter a valid Email ID')
+            .form-group
+                textarea.form-control(name='body', id='body')
+            br
+            input.btn.btn-default(type='submit', name='submit', value='Add Comment')
+            script(src='/ckeditor/ckeditor.js')
+            script
+                | CKEDITOR.replace('body')
